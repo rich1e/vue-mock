@@ -1,18 +1,52 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import axios from 'axios'
+import { from, Observable, scheduled, asyncScheduler } from 'rxjs'
 
 defineProps<{ msg: string }>()
 
 const promiseMethodHandler = () => {
   axios.get('api/get').then((res) => {
-  console.log('This promise method#', res)
+    console.log('This promise method#', res)
   })
 }
 
 const awaitMethodHandler = async () => {
   const res = await axios.get('api/get')
   console.log('This await method#', res)
+}
+
+const observeMesthodHandler = () => {
+  // const observable = from(axios.get('api/get'))
+
+  // observable.subscribe((res: any) => {
+  //   console.log('This observe method#', res)
+  // })
+
+  // const asyncObserve$ = scheduled(observable, asyncScheduler)
+
+  // asyncObserve$.subscribe((res: any) => {
+  //   console.log('This observe method#', res)
+  // })
+
+  const observable = new Observable((observer) => {
+    const ob = from(axios.get('api/get'))
+    ob.subscribe((res: any) => {
+      observer.next(res)
+      observer.complete();
+    });
+  })
+
+  observable.subscribe({
+    next(res) {
+      console.log('This observe method#', res)
+    },
+    error(err) {
+      console.log(`错误信息：${err}`)
+    },
+    complete() {
+      console.log('Done!')
+    }
+  })
 }
 
 </script>
@@ -23,6 +57,7 @@ const awaitMethodHandler = async () => {
   <div class="card">
     <button type="button" @click="promiseMethodHandler">Promise</button>
     <button type="button" @click="awaitMethodHandler">Await</button>
+    <button type="button" @click="observeMesthodHandler">Observe</button>
   </div>
 </template>
 
