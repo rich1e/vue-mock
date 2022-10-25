@@ -16,11 +16,11 @@ const awaitMethodHandler = async () => {
 }
 
 const observeMesthodHandler = () => {
-  // const observable = from(axios.get('api/get'))
+  const observable = from(axios.get('api/get'))
 
-  // observable.subscribe((res: any) => {
-  //   console.log('This observe method#', res)
-  // })
+  observable.subscribe((res: any) => {
+    console.log('This observe method#', res)
+  })
 
   // const asyncObserve$ = scheduled(observable, asyncScheduler)
 
@@ -28,25 +28,25 @@ const observeMesthodHandler = () => {
   //   console.log('This observe method#', res)
   // })
 
-  const observable = new Observable((observer) => {
-    const ob = from(axios.get('api/get'))
-    ob.subscribe((res: any) => {
-      observer.next(res)
-      observer.complete();
-    });
-  })
+  // const observable = new Observable((observer) => {
+  //   const ob = from(axios.get('api/get'))
+  //   ob.subscribe((res: any) => {
+  //     observer.next(res)
+  //     observer.complete();
+  //   });
+  // })
 
-  observable.subscribe({
-    next(res) {
-      console.log('This observe method#', res)
-    },
-    error(err) {
-      console.log(`错误信息：${err}`)
-    },
-    complete() {
-      console.log('Done!')
-    }
-  })
+  // observable.subscribe({
+  //   next(res) {
+  //     console.log('This observe method#', res)
+  //   },
+  //   error(err) {
+  //     console.log(`错误信息：${err}`)
+  //   },
+  //   complete() {
+  //     console.log('Done!')
+  //   }
+  // })
 }
 
 </script>

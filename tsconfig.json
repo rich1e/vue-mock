@@ -4,7 +4,11 @@
     "useDefineForClassFields": true,
     "module": "ESNext",
     "moduleResolution": "Node",
-    "types": ["vite/client"],
+    "types": ["vite/client", "reflect-metadata"],
+
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
     "strict": true,
     "jsx": "preserve",
     "sourceMap": true,
