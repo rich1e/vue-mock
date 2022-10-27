@@ -5,9 +5,11 @@ const TYPES = {
   ResponsetInterceptors: Symbol.for('ResponsetInterceptors'),
 
   RequestError: Symbol.for('RequestError'),
+  RequestExceptionError: Symbol.for('RequestExceptionError'),
   RequestExceptionHandler: Symbol.for('RequestExceptionHandler'),
 
   ResponseError: Symbol.for('ResponseError'),
+  ResponseExceptionError: Symbol.for('ResponseExceptionError'),
   ResponseExceptionHandler: Symbol.for('ResponseExceptionHandler')
 }
 

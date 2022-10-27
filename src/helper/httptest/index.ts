@@ -10,6 +10,10 @@
  * @see https://juejin.cn/post/7119334793854058532
  */
 
+import { defHttp } from "./inversify.config";
+import { TYPES } from "./types";
+import { AxiosHttpClient } from "./interfaces";
+
 /**
  * Inversify and Axios Example
  * @see https://gist.github.com/robertleeplummerjr/a7e196a828f384e54c2cfb2adf7f9d8d
@@ -20,14 +24,12 @@
  * @see https://github.com/axios/axios/issues/164#issuecomment-327837467
  * @see https://cloud.tencent.com/developer/article/1751882?cps_key=1d358d18a7a17b4a6df8d67a62fd3d3d
  * @see https://www.zhangwenbing.com/blog/nodejs/rka_kpVlX
- * 
  */
 
 /**
  * axios 其他封装方式📦
  * @see https://juejin.cn/post/7041930275458285582
  * @see https://juejin.cn/post/6844903657478029325
- * 
  */
 
 /**
@@ -35,4 +37,6 @@
  * @see https://www.xiabingbao.com/post/request/axios-self-adapter.html
  */
 
-export {}
+const httpClient = defHttp.get<AxiosHttpClient>(TYPES.CustomAxiosHttpClient)
+
+export default httpClient;

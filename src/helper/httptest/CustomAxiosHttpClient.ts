@@ -4,6 +4,7 @@ import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
 import { TYPES } from "./types";
 import { RequestInterceptors, ResponsetInterceptors } from "./httpInterceptors";
+import { AxiosHttpClient } from "./interfaces";
 
 /**
  * axios & inversify
@@ -11,22 +12,22 @@ import { RequestInterceptors, ResponsetInterceptors } from "./httpInterceptors";
  * @see https://doc.inversify.cloud/zh_cn/
  */
 
-
 interface CreateAxiosOptions extends AxiosRequestConfig {
   authenticationScheme?: string;
   // transform?: AxiosTransform;
   // requestOptions?: RequestOptions;
 }
 
-class HttpClient {
+@injectable()
+class CustomAxiosHttpClient implements AxiosHttpClient {
   private axiosInstance: AxiosInstance;
-  private readonly options: CreateAxiosOptions;
+  // private readonly options: CreateAxiosOptions;
   
   private _requestInterceptors: RequestInterceptors;
   private _responsetInterceptors: ResponsetInterceptors;
 
   constructor(
-    options: CreateAxiosOptions,
+    // options: CreateAxiosOptions,
     /**
      * Property has no initializer and is not definitely assigned in the constructor.
      * @see https://github.com/inversify/InversifyJS/blob/master/wiki/property_injection.md
@@ -36,19 +37,23 @@ class HttpClient {
     @inject(TYPES.RequestInterceptors) requestInterceptors: RequestInterceptors,
     @inject(TYPES.ResponsetInterceptors) responsetInterceptors: ResponsetInterceptors
   ) {
-    this.options = options;
+    console.log('constructor#:', CustomAxiosHttpClient)
+    // this.options = options || {};
     this._requestInterceptors = requestInterceptors;
     this._responsetInterceptors = responsetInterceptors;
 
-    this.axiosInstance = axios.create(options);
+    this.axiosInstance = axios.create();
     this.setupInterceptors();
   }
 
   private setupInterceptors() {
-    this._requestInterceptors.use()
-    this._responsetInterceptors.use()
+    this._requestInterceptors.use(this.axiosInstance)
+    this._responsetInterceptors.use(this.axiosInstance)
   }
 
+  create() {
+    return this.axiosInstance
+  }
 }
 
-export default HttpClient;
+export default CustomAxiosHttpClient;

@@ -2,6 +2,10 @@
 
 import type { AxiosError, AxiosInstance, CreateAxiosDefaults } from "axios";
 
+export interface AxiosHttpClient {
+  create(config?: CreateAxiosDefaults): AxiosInstance;
+}
+
 /**
  * 基础配置
  */
@@ -23,6 +27,13 @@ export interface HttpInterceptors {
  * 错误处理逻辑
  */
 export interface ExceptionHandler {
+  execute(): void;
+}
+
+/**
+ * 错误信息
+ */
+export interface ExceptionError {
   throw(): AxiosError;
 }
 
@@ -31,8 +42,4 @@ export interface ExceptionHandler {
  */
 export interface AdapterExtensions {
 
-}
-
-export interface AxiosHttpClient {
-  create(config?: CreateAxiosDefaults): AxiosInstance;
 }

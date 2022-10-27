@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import axios from 'axios'
 import { from, Observable, scheduled, asyncScheduler } from 'rxjs'
+import { Warrior } from '../helper/ioc/interfaces';
+import { myContainer } from '../helper/ioc/inversify.config';
+import { TYPES } from '../helper/ioc/types';
+
+// expect(ninja.fight()).eql("cut!"); // true
+// expect(ninja.sneak()).eql("hit!"); // true
 
 defineProps<{ msg: string }>()
 
@@ -49,6 +55,17 @@ const observeMesthodHandler = () => {
   // })
 }
 
+const httpClientTestHandler = async () => {
+  // const http = httpClient.create()
+  // const res = await http.get('api/get')
+  // console.log('This httpClient method#', res)
+
+ const ninja = myContainer.get<Warrior>(TYPES.Warrior);
+
+ console.log(ninja.fight())
+ console.log(ninja.sneak())
+}
+
 </script>
 
 <template>
@@ -58,6 +75,7 @@ const observeMesthodHandler = () => {
     <button type="button" @click="promiseMethodHandler">Promise</button>
     <button type="button" @click="awaitMethodHandler">Await</button>
     <button type="button" @click="observeMesthodHandler">Observe</button>
+    <button type="button" @click="httpClientTestHandler">HttpClient</button>
   </div>
 </template>
 

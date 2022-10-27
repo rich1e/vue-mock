@@ -1,5 +1,6 @@
-import type { AxiosRequestConfig, AxiosResponse, AxiosInstance } from "axios";
+import "reflect-metadata";
 import { inject, injectable } from "inversify";
+import type { AxiosRequestConfig, AxiosResponse, AxiosInstance } from "axios";
 
 import { TYPES } from "./types";
 import { HttpInterceptors } from "./interfaces"
@@ -7,14 +8,12 @@ import { RequestExceptionHandler, ResponseExceptionHandler } from "./exceptionHa
 
 @injectable()
 export class RequestInterceptors implements HttpInterceptors {
-  private _ins: AxiosInstance;
+  // private _ins: AxiosInstance;
   private _requestExceptionHandler: RequestExceptionHandler
 
   constructor(
-    instance: AxiosInstance,
     @inject(TYPES.RequestExceptionHandler) requestExceptionHandler: RequestExceptionHandler
   ) {
-    this._ins = instance;
     this._requestExceptionHandler = requestExceptionHandler;
   }
 
@@ -22,8 +21,8 @@ export class RequestInterceptors implements HttpInterceptors {
     this._requestExceptionHandler.execute();
   }
 
-  use() {
-    this._ins.interceptors.request.use((config: AxiosRequestConfig) => {
+  use(instance: AxiosInstance) {
+    instance.interceptors.request.use((config: AxiosRequestConfig) => {
       return config;
     }, this.RequestInterceptorsError);
   }
@@ -31,14 +30,14 @@ export class RequestInterceptors implements HttpInterceptors {
 
 @injectable()
 export class ResponsetInterceptors implements HttpInterceptors {
-  private _ins: AxiosInstance;
+  // private _ins: AxiosInstance;
   private _responseExceptionHandler: ResponseExceptionHandler
 
   constructor(
-    instance: AxiosInstance,
+    // instance: AxiosInstance,
     @inject(TYPES.ResponsetInterceptors) responseExceptionHandler: ResponseExceptionHandler
   ) {
-    this._ins = instance;
+    // this._ins = instance;
     this._responseExceptionHandler = responseExceptionHandler;
   }
 
@@ -46,8 +45,9 @@ export class ResponsetInterceptors implements HttpInterceptors {
     this._responseExceptionHandler.execute();
   }
 
-  use() {
-    this._ins.interceptors.response.use((response: AxiosResponse) => {
+
+  use(instance: AxiosInstance) {
+    instance.interceptors.response.use((response: AxiosResponse) => {
       if (response?.status === 200) {
         return response.data;
       }
